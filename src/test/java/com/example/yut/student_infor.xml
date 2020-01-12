@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<students>
+    <student id="201810001" name="张三小" sex="男" birth="2000-10-10">
+        <hobby>足球</hobby>
+        <hobby>篮球</hobby>
+        <hobby>混球</hobby>
+        <hobby>二球</hobby>
+        <introduce>
+            张三之子，体格壮硕，胆小如鼠，外号加菲猫！
+        </introduce>
+    </student>
+    <student id="201811001" name="刘诗雅" sex="女" birth="2010-10-21">
+        <hobby>睡觉</hobby>
+        <hobby>刷剧</hobby>
+        <hobby>追星</hobby>
+        <hobby>打豆豆</hobby>
+        <introduce>
+            刘家之女，酷爱唱歌! 但五音有其四，邻居不堪其扰，谓之刘嘶哑！
+        </introduce>
+    </student>
+</students>

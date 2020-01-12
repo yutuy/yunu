@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+  PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+  "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+	<!-- ojdbc6.jar已经直接放到项目中,无需指定了,同时mysql驱动包也一样,这里同样无需指定 -->
+	<!-- <classPathEntry location="ojdbc6.jar" /> -->
+	<context id="context1" targetRuntime="MyBatis3">
+		<!-- 指定生成的java文件的编码,没有直接生成到项目时中文可能会乱码 -->
+		<property name="javaFileEncoding" value="UTF-8" />
+		<!-- 这里的type里写的是你的实现类的类全路径 -->
+		<commentGenerator
+			type="com.study.util.MyCommentGenerator">
+		</commentGenerator>
+
+		<!-- <jdbcConnection driverClass="oracle.jdbc.driver.OracleDriver" -->
+		<!-- connectionURL="jdbc:oracle:thin:@远程ip地址或localhost:1521:orcl" userId="用户名" -->
+		<!-- password="密码"> -->
+		<!-- 针对oracle数据库 -->
+		<!-- <property name="remarksReporting" value="true"></property> -->
+		<!-- </jdbcConnection> -->
+
+		<!-- mysql配置 -->
+		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
+			connectionURL="jdbc:mysql://120.27.147.107:3306/feihetest" userId="root"
+			password="123456">
+			<property name="useInformationSchema" value="true"></property>
+		</jdbcConnection>
+
+		<javaTypeResolver>
+			<property name="forceBigDecimals" value="false" />
+		</javaTypeResolver>
+
+		<javaModelGenerator targetPackage="com.fh.web.pg"
+			targetProject="D:\">
+			<property name="enableSubPackages" value="true" />
+			<property name="trimStrings" value="true" />
+		</javaModelGenerator>
+		<sqlMapGenerator targetPackage="com.fh.web.pg"
+			targetProject="D:\">
+			<property name="enableSubPackages" value="true" />
+		</sqlMapGenerator>
+		<javaClientGenerator type="XMLMAPPER"
+			targetPackage="com.fh.web.pg" targetProject="D:\">
+			<property name="enableSubPackages" value="true" />
+		</javaClientGenerator>
+
+
+		<table schema="" tableName="t_bo_store_business_older_qrcode"
+			domainObjectName="BusinessOlderQrcodeEntity" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		
+		<!--不生成帮助类（Exmaples） -->
+		<!--已生成的表 <table schema="demo" tableName="USER" domainObjectName="User"></table> -->
+<!-- 		<table schema="" tableName="t_sfa_city" -->
+<!-- 			domainObjectName="StoreEntity" enableCountByExample="false" -->
+<!-- 			enableUpdateByExample="false" enableDeleteByExample="false" -->
+<!-- 			enableSelectByExample="false" selectByExampleQueryId="false"> -->
+<!-- 		</table> -->
+	<!-- 	<table schema="" tableName="t_sfa_user"
+			domainObjectName="BaseUserEntity" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		<table schema="" tableName="t_sfa_store"
+			domainObjectName="StoreEntity" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		<table schema="" tableName="t_sfa_sku"
+			domainObjectName="SkuEntity" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		<table schema="" tableName="t_sfa_role"
+			domainObjectName="BaseRoleEntity" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		<table schema="" tableName="t_sfa_plant"
+			domainObjectName="PlantEntity" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		<table schema="" tableName="t_sfa_organization"
+			domainObjectName="OrganizationEntity" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		<table schema="" tableName="t_sfa_ka"
+			domainObjectName="KaEntity" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		<table schema="" tableName="t_sfa_function"
+			domainObjectName="BaseFunctionEntity" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		<table schema="" tableName="t_sfa_dict"
+			domainObjectName="DictEntryEntity" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		<table schema="" tableName="t_sfa_brand"
+			domainObjectName="BrandEntity" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		<table schema="" tableName="mt_user_role"
+			domainObjectName="BaseUserRoleEntity" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		<table schema="" tableName="mt_role_function"
+			domainObjectName="BaseRoleFunctionEntity" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table> -->
+	</context>
+</generatorConfiguration>

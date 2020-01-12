@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.study.mapper.BaseUserMapper">
+
+	<resultMap id="baseResultMap" type="com.study.entity.BaseUserEntity" >
+		<result column="id" property="id" />
+		<result column="login_user_name" property="loginUserName" />
+		<result column="login_user_password" property="loginUserPassword" />
+		<result column="real_name" property="realName" />
+		<result column="mobile" property="mobile" jdbcType="VARCHAR" />
+	    <result column="mail" property="mail" jdbcType="VARCHAR" />
+	    <result column="company" property="company" jdbcType="INTEGER" />
+	    <result column="is_bind" property="isBind" jdbcType="INTEGER" />
+	    <result column="active_time" property="activeTime" jdbcType="TIMESTAMP" />
+	    <result column="begin_workdate" property="beginWorkDate" jdbcType="TIMESTAMP" />
+	    <result column="end_workdate" property="endWorkDate" jdbcType="TIMESTAMP" />
+	    <result column="idCard" property="idCard" jdbcType="VARCHAR" />
+	    <result column="mac" property="mac" jdbcType="VARCHAR" />
+		<result column="ssr_type" property="ssrType" />
+		<result column="work_state" property="workState" />
+	    <result column="ksfid" property="ksfid" jdbcType="VARCHAR" />
+	    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+	    <result column="update_user_id" property="updateUserId" jdbcType="INTEGER" />
+	    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+	    <result column="create_user_id" property="createUserId" jdbcType="INTEGER" />
+		<result column="active" property="active" />
+	</resultMap>
+	
+	<select id="getUsersByRoleId" resultMap="baseResultMap" parameterType="java.lang.Integer">
+		SELECT
+			u.id,u.login_user_name
+		FROM
+			t_sfa_user u
+		INNER JOIN mt_user_role ur ON ur.user_id = u.id
+		INNER JOIN t_sfa_role r ON r.id = ur.role_id
+		WHERE
+			r.id = #{roleId}
+	</select>
+	<!-- 用户登录 -->
+	<select id="getUserByUserName" resultMap="baseResultMap" parameterType="com.study.entity.BaseUserEntity">
+		SELECT 
+			id,real_name,login_user_name,login_user_password,ssr_type,active
+		FROM
+			t_sfa_user 
+		WHERE
+			login_user_name = #{loginUserName} 
+	</select>
+	<!-- 根据真实名查出用户 -->
+	<select id="getUserByRealName" resultMap="baseResultMap" parameterType="com.study.entity.BaseUserEntity">
+		SELECT 
+			id,real_name,login_user_name,login_user_password,ssr_type,active
+		FROM
+			t_sfa_user 
+		WHERE
+			real_name = #{realName} 
+	</select>
+	<!-- 用户校验 -->
+	<select id="checkUserExists" resultType="int" parameterType="String">
+		SELECT 
+			count(1)
+		FROM
+			t_sfa_user 
+		WHERE
+			login_user_name = #{loginUserName} 
+	</select>
+
+	<select id="selectByConditionForCount" resultType="int" parameterType="java.util.HashMap">
+        SELECT 
+			COUNT(DISTINCT t_sfa_user.id)
+		FROM
+			t_sfa_user 
+		LEFT JOIN mt_user_role ON mt_user_role.user_id = t_sfa_user.id
+		WHERE 1=1
+		<if test="loginUserName != null and loginUserName != ''">
+			AND t_sfa_user.login_user_name like '%${loginUserName}%'
+		</if>
+		<if test="active != null and active != ''">
+			AND t_sfa_user.active = #{active}
+		</if>
+		<if test="realName != null and realName != ''">
+			AND t_sfa_user.real_name like '%${realName}%'
+		</if>
+		<if test="mobile != null and mobile != ''">
+			AND t_sfa_user.mobile like '%${mobile}%'
+		</if>
+		<if test="mail != null and mail != ''">
+			AND t_sfa_user.mail like '%${mail}%'
+		</if>
+		<if test="roleId != null and roleId != ''">
+			AND mt_user_role.role_id = #{roleId}
+		</if>
+		<if test="ids != null and ids != ''">
+			AND t_sfa_user.id IN (${ids})
+		</if>
+	</select>
+	
+	<select id="selectByConditionForListByIdsAndLimt" resultType="com.study.vo.BaseUserVo" parameterType="java.util.HashMap">
+          SELECT DISTINCT
+				t_sfa_user.id AS id,
+				t_sfa_user.login_user_name AS loginUserName,
+				t_sfa_user.login_user_password AS loginUserPassword,
+				t_sfa_user.real_name AS realName,
+				t_sfa_user.mobile AS mobile,
+				t_sfa_user.mail AS mail,
+				t_sfa_user.company AS company,
+				t_sfa_user.is_bind AS isBind,
+				t_sfa_user.active_time AS activeTime,
+				t_sfa_user.begin_workdate AS beginWorkDate,
+				t_sfa_user.end_workDate AS endWorkDate,
+				t_sfa_user.idCard AS idCard,
+				t_sfa_user.mac AS mac,
+				t_sfa_user.ssr_type AS ssrType,
+				t_sfa_user.work_state AS workState,
+				t_sfa_user.ksfid AS ksfid,
+				t_sfa_user.update_time AS updateTime,
+				t_sfa_user.update_user_id AS updateUserId,
+				t_sfa_user.create_time AS createTime,
+				t_sfa_user.create_user_id AS createUserId,
+				t_sfa_user.active AS active
+		FROM
+			t_sfa_user 
+		LEFT JOIN mt_user_role ON mt_user_role.user_id = t_sfa_user.id
+		WHERE 1=1
+		<if test="loginUserName != null and loginUserName != ''">
+			AND t_sfa_user.login_user_name like '%${loginUserName}%'
+		</if>
+		<if test="active != null and active != ''">
+			AND t_sfa_user.active = #{active}
+		</if>
+		<if test="realName != null and realName != ''">
+			AND t_sfa_user.real_name like '%${realName}%'
+		</if>
+		<if test="mobile != null and mobile != ''">
+			AND t_sfa_user.mobile like '%${mobile}%'
+		</if>
+		<if test="mail != null and mail != ''">
+			AND t_sfa_user.mail like '%${mail}%'
+		</if>
+		<if test="roleId != null and roleId != ''">
+			AND mt_user_role.role_id = #{roleId}
+		</if>
+		<if test="ids != null and ids != ''">
+			AND t_sfa_user.id IN (${ids})
+		</if>
+		 ORDER BY t_sfa_user.update_time desc,t_sfa_user.id
+	     <if test="pageNumber != null and pageSize != null">
+			LIMIT ${pageNumber},${pageSize}
+		</if>
+	</select>
+
+	<!-- 获取ssrtype -->
+	<select id="getUserSsrType" resultType="int" parameterType="java.lang.Integer">
+		SELECT 
+			ssr_type
+		FROM
+			t_sfa_user 
+		WHERE
+			id = #{userId}
+	</select>
+	
+	<!-- 该角色管理的人员 -->
+	<select id="getUserWithRole" resultType="com.study.vo.BaseUserVo" parameterType="java.util.HashMap">
+		SELECT DISTINCT
+		   	au.id AS id,
+			au.login_user_name AS loginUserName,
+			au.login_user_password AS loginUserPassword,
+			au.real_name AS realName,
+			au.mobile AS mobile,
+			au.mail AS mail,
+			au.company AS company,
+			au.is_bind AS isBind,
+			au.active_time AS activeTime,
+			au.begin_workdate AS beginWorkDate,
+			au.end_workDate AS endWorkDate,
+			au.idCard AS idCard,
+			au.mac AS mac,
+			au.ssr_type AS ssrType,
+			au.work_state AS workState,
+			au.ksfid AS ksfid,
+			au.update_time AS updateTime,
+			au.update_user_id AS updateUserId,
+			au.create_time AS createTime,
+			au.create_user_id AS createUserId,
+			au.active AS active
+	    FROM
+		   t_sfa_organization
+		INNER JOIN t_sfa_user ON t_sfa_user.id = #{loguserId}
+		<if test='domainlevel == 5'>
+		 INNER JOIN t_sfa_store store ON t_sfa_organization.level4_id = store.level4_id  
+		</if>           
+		 INNER JOIN mt_user_domain ON mt_user_domain.user_id = t_sfa_user.id    
+		 AND mt_user_domain.`level` = #{logdomainlevel}
+		 AND mt_user_domain.role_id = #{logroleId}
+		<if test='logdomainlevel == 1'>
+		 AND mt_user_domain.item_id = t_sfa_organization.level1_id
+		</if>
+		<if test='logdomainlevel == 2'>
+		 AND mt_user_domain.item_id = t_sfa_organization.level2_id 
+		 </if>
+		 <if test='logdomainlevel == 3'>
+		  AND mt_user_domain.item_id =   t_sfa_organization.level3_id 
+		 </if>
+		 <if test='logdomainlevel == 4'>
+		  AND mt_user_domain.item_id =  t_sfa_organization.level4_id 
+		 </if>   
+		 	INNER JOIN (
+	         SELECT
+	            u.id,
+	            d.item_id 
+	         FROM
+			   t_sfa_user u
+			 INNER JOIN ( SELECT DISTINCT user_id, role_id FROM mt_user_role ) ur ON ur.user_id = u.id 
+			 AND ur.role_id = #{roleId}
+			 INNER JOIN mt_user_domain d ON d.user_id = u.id 
+			 AND d.`level` =#{domainlevel}
+			 AND d.role_id = ur.role_id 
+	       ) t
+	       <if test='domainlevel == 1'>
+	         ON t.item_id =  t_sfa_organization.level1_id 
+	       </if>
+	       <if test='domainlevel == 2'>
+	         ON t.item_id =  t_sfa_organization.level2_id 
+	       </if>
+	       <if test='domainlevel == 3'>
+	         ON t.item_id =  t_sfa_organization.level3_id 
+	       </if>
+	       <if test='domainlevel == 4'>
+	         ON t.item_id =  t_sfa_organization.level4_id 
+	       </if>   
+	       <if test='domainlevel == 5'>
+	         ON t.item_id =store.id      
+	       </if>
+	     INNER JOIN t_sfa_user au ON au.id = t.id 
+	     WHERE t_sfa_organization.active = 1 
+	     ORDER BY au.update_time DESC
+	</select>
+	
+	<!-- 5级门店角色管理的人员 -->
+	<select id="getUserWithRoleFive" resultType="com.study.vo.BaseUserVo" parameterType="java.util.HashMap">
+		SELECT DISTINCT
+		    au.id AS id,
+			au.login_user_name AS loginUserName,
+			au.login_user_password AS loginUserPassword,
+			au.real_name AS realName,
+			au.mobile AS mobile,
+			au.mail AS mail,
+			au.company AS company,
+			au.is_bind AS isBind,
+			au.active_time AS activeTime,
+			au.begin_workdate AS beginWorkDate,
+			au.end_workDate AS endWorkDate,
+			au.idCard AS idCard,
+			au.mac AS mac,
+			au.ssr_type AS ssrType,
+			au.work_state AS workState,
+			au.ksfid AS ksfid,
+			au.update_time AS updateTime,
+			au.update_user_id AS updateUserId,
+			au.create_time AS createTime,
+			au.create_user_id AS createUserId,
+			au.active AS active
+	    FROM t_sfa_store store  
+	    INNER JOIN t_sfa_user ON t_sfa_user.id = #{loguserId}
+		INNER JOIN mt_user_domain ON mt_user_domain.user_id = t_sfa_user.id    
+		AND mt_user_domain.`level` = #{logdomainlevel}
+		AND mt_user_domain.role_id = #{logroleId}
+		AND mt_user_domain.item_id = store.id
+	 	INNER JOIN (
+	     SELECT
+	        u.id,
+	        d.item_id 
+	     FROM
+		   t_sfa_user u
+		 INNER JOIN ( SELECT DISTINCT user_id, role_id FROM mt_user_role ) ur ON ur.user_id = u.id 
+		 AND ur.role_id = #{roleId}
+		 INNER JOIN mt_user_domain d ON d.user_id = u.id 
+		 AND d.`level` =#{domainlevel}
+		 AND d.role_id = ur.role_id 
+	     ) t ON t.item_id =store.id 
+	     INNER JOIN t_sfa_user au ON au.id = t.id 
+	     WHERE store.active = 1 
+	     ORDER BY au.update_time DESC
+	</select>
+	
+	<!-- 查询没有被管辖的人员 -->
+	<select id="selectUserForListNoDomain" resultType="com.study.vo.BaseUserVo" parameterType="java.util.HashMap">
+		SELECT
+			u.id AS id,
+			u.login_user_name AS loginUserName,
+			u.login_user_password AS loginUserPassword,
+			u.real_name AS realName,
+			u.mobile AS mobile,
+			u.mail AS mail,
+			u.company AS company,
+			u.is_bind AS isBind,
+			u.active_time AS activeTime,
+			u.begin_workdate AS beginWorkDate,
+			u.end_workDate AS endWorkDate,
+			u.idCard AS idCard,
+			u.mac AS mac,
+			u.ssr_type AS ssrType,
+			u.work_state AS workState,
+			u.ksfid AS ksfid,
+			u.update_time AS updateTime,
+			u.update_user_id AS updateUserId,
+			u.create_time AS createTime,
+			u.create_user_id AS createUserId,
+			u.active AS active
+		FROM
+			t_sfa_user u
+		INNER JOIN mt_user_role ur ON u.id = ur.user_id
+		INNER JOIN t_sfa_role r ON r.id = ur.role_id AND r.`level` > #{logLevel}
+		WHERE u.id NOT IN (
+			SELECT DISTINCT
+				ue.id
+			FROM
+				t_sfa_user ue
+			INNER JOIN mt_user_role rr ON rr.user_id = ue.id
+			INNER JOIN mt_user_domain dm ON dm.user_id = ue.id
+			AND rr.role_id = dm.role_id
+		)
+		ORDER BY u.update_time DESC
+	</select>
+
+	<sql id="myConfigName" >t_bo_sku_series</sql>
+	<!-- 通用表名变量获取数据 -->
+	<select id="getCommmonDataByTable" resultType="java.util.HashMap" parameterType="java.lang.String">
+		SELECT
+			*
+		FROM
+		    -- t_sfa_area
+			 ${myTable}
+		limit 0,10
+	</select>
+
+	<select id="selectTest" resultType="java.util.Map">
+      select * from ${myConfigName}
+  </select>
+
+
+</mapper>
